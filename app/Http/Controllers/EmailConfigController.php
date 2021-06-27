@@ -14,24 +14,14 @@ class EmailConfigController extends Controller
      */
     public function index()
     {
-        $config = EmailConfig::where('id', 1)->first();
-        return view('welcome', compact('config'));
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        $config = EmailConfig::first();
+        return view('welcome')->with('config', $config);
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request  $requestselect('id')
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -65,28 +55,6 @@ class EmailConfigController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -95,17 +63,33 @@ class EmailConfigController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $config = EmailConfig::findOrFail($id);
+
+        $request->validate([
+            'app_name' => 'required',
+            'app_url' => 'required',
+            'mail_mailer' => 'required',
+            'mail_host' => 'required',
+            'mail_port' => 'required|numeric',
+            'mail_username' => 'required|email',
+            'mail_password' => 'required',
+            'mail_encryption' => 'required',
+            'mail_from_address' => 'required|email'
+        ]);
+
+        $config->app_name = $request->input('app_name');
+        $config->app_url = $request->input('app_url');
+        $config->mail_mailer = $request->input('mail_mailer');
+        $config->mail_host = $request->input('mail_host');
+        $config->mail_port = $request->input('mail_port');
+        $config->mail_username = $request->input('mail_username');
+        $config->mail_password = $request->input('mail_password');
+        $config->mail_encryption = $request->input('mail_encryption');
+        $config->mail_from_address = $request->input('mail_from_address');
+
+        $config->save();
+
+        return redirect()->route('email-config')->withStatus('Configuration saved!.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
 }

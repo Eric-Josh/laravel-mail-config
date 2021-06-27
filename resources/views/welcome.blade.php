@@ -43,19 +43,20 @@
                 </div><br />
                 @endif
                 
-
-                <form action="{{ route('email-config.store') }}" method="post" id="config-form">
+               
+                <form action="{{ route('email-config.store') }}" method="POST">
                 @csrf
-                <div id="csrf-token"></div>
+                <input type="hidden" id="method" name="_method" value="">
                     <div class="mt-8 bg-white dark:bg-gray-800 overflow-hidden shadow sm:rounded-lg">
                         <center><div class="ml-4 text-lg leading-7 font-semibold">Application</div></center>
+                        <input type="hidden" name="id" value="{{old('id')}}" id="mail-id"/>
                         <div class="grid grid-cols-1 md:grid-cols-2">
                             <div class="p-6">
-                            <input type="text" placeholder="App Name" name="app_name" value="{{ $config->app_name }}" required> 
+                            <input type="text" placeholder="App Name" class="mailer" name="app_name" value="{{$config->app_name}}" required /> 
                             </div>
 
                             <div class="p-6 border-t border-gray-200 dark:border-gray-700 md:border-t-0 md:border-l">
-                                <input type="text" placeholder="App URL" name="app_url" value="{{ $config->app_url }}" required> 
+                                <input type="text" placeholder="App URL" class="mailer" name="app_url" value="{{ old('app_url') }}" required> 
                             </div>
                         </div>
                     </div>
@@ -65,39 +66,39 @@
                         <div class="grid grid-cols-1 md:grid-cols-2">
                             
                             <div class="p-6 border-t border-gray-200 dark:border-gray-700">
-                                <input type="email" placeholder="From Address" name="mail_from_address" value="{{ $config->mail_from_address }}" required>
+                                <input type="email" placeholder="From Address" class="mailer" name="mail_from_address" value="{{ old('mail_from_address') }}" required>
                             </div>
                             <div class="p-6 border-t border-gray-200 dark:border-gray-700 md:border-l">
-                                <input type="text" placeholder="Sending Method (e.g: SMTP)" maxlength="10" name="mail_mailer" value="{{ $config->mail_mailer }}" required>
+                                <input type="text" placeholder="Sending Method (e.g: SMTP)" class="mailer" maxlength="10" name="mail_mailer" value="{{ old('mail_mailer') }}" required>
                             </div>
 
                             <div class="p-6 border-t border-gray-200 dark:border-gray-700">
-                                <input type="text" placeholder="SMTP Host" name="mail_host" value="{{ $config->mail_host }}" required>
+                                <input type="text" placeholder="SMTP Host" class="mailer" name="mail_host" value="{{ old('mail_host') }}" required>
                             </div>
                             <div class="p-6 border-t border-gray-200 dark:border-gray-700 md:border-l">
-                                <input type="number" placeholder="SMTP Port" name="mail_port" value="{{ $config->mail_port }}" required>
+                                <input type="number" placeholder="SMTP Port" class="mailer" name="mail_port" value="{{ old('mail_port') }}" required>
                             </div>
 
                             <div class="p-6 border-t border-gray-200 dark:border-gray-700">
-                                <input type="email" placeholder="SMTP User" name="mail_username" value="{{ $config->mail_username }}" required>
+                                <input type="email" placeholder="SMTP User" class="mailer" name="mail_username" value="{{ old('mail_username') }}" required>
                             </div>
                             <div class="p-6 border-t border-gray-200 dark:border-gray-700 md:border-l">
-                                <input type="text" placeholder="SMTP Password" name="mail_password" value="{{ $config->mail_password }}" required>
+                                <input type="password" placeholder="SMTP Password" class="mailer" name="mail_password" value="{{ old('mail_password') }}" required>
                             </div>
 
                             <div class="p-6 border-t border-gray-200 dark:border-gray-700 md:border-l">
                                 Connection Type <br>
                                 
-                                <input type="radio"  value="SSL" name="mail_encryption" {{ ($config->mail_encryption == 'SSL') ? 'checked' : '' }}>
-                                <label class="custom-control-label" for="mail_encryption">SSL</label>
+                                <input type="radio" class="mail-encrypt" value="SSL" name="mail_encryption" {{ old('mail_encryption') == 'SSL' ? 'checked' : '' }}>
+                                <label for="mail_encryption">SSL</label>
 
-                                <input type="radio"  value="TLS" name="mail_encryption" {{ ($config->mail_encryption == 'TLS') ? 'checked' : '' }}>
-                                <label class="custom-control-label" for="mail_encryption">TLS</label>
+                                <input type="radio"  class="mail-encrypt" value="TLS" name="mail_encryption" {{ old('mail_encryption') == 'TLS' ? 'checked' : '' }}>
+                                <label  for="mail_encryption">TLS</label>
                             </div>
 
                             <div class="p-6 border-t border-gray-200 dark:border-gray-700">
                                 <label class="custom-control-label" for="checkbox">Send Test Mail</label>
-                                <input type="checkbox" name="test_mail_check" id="mail-check">
+                                <input type="checkbox" name="test_mail_check" id="mail-check" >
                             </div>
                             <div class="p-6 border-t border-gray-200 dark:border-gray-700 md:border-l">
                                 <input type="email" placeholder="Test Mail Address" name="test_mail" id="test-mail" disabled />
@@ -105,7 +106,7 @@
                             
                         </div>
 
-                        <div class="p-6 border-t border-gray-200 dark:border-gray-700 md:border-l">
+                        <div class="p-6 border-t border-gray-200 dark:border-gray-700 md:border-l" id="btn">
                             <button type="submit" id="save">Save</button>
                         </div>
                     </div>
@@ -124,8 +125,23 @@
                     $('#test-mail').prop('disabled',true);
                 }
             });
-        })
-            
+
+            if($('#mail-id').val() != ''){
+                $('#btn').html('<button type="button" id="edit">Edit</button>');               
+                $('#mail-check').prop('disabled',true);
+                $('.mail-encrypt').prop('disabled',true);
+                $('.mailer').prop('disabled',true);
+            }
+
+            $('#edit').click(function(){
+                $('#mail-check').prop('disabled',false);
+                $('.mail-encrypt').prop('disabled',false);
+                $('.mailer').prop('disabled',false);
+                
+                $('#method').val('put');
+                $('#btn').html('<button type="submit" id="save">Save</button>');
+            });
+        });
         </script>
     </body>
 </html>
