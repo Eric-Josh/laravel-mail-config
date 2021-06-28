@@ -4,9 +4,14 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\EmailConfig;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Config;
+
+use App\Http\Helpers\OptHelpers;
 
 class EmailConfigController extends Controller
 {
+
     /**
      * Display a listing of the resource.
      *
@@ -15,6 +20,7 @@ class EmailConfigController extends Controller
     public function index()
     {
         $config = EmailConfig::first();
+        
         return view('welcome')->with('config', $config);
     }
 
@@ -49,6 +55,8 @@ class EmailConfigController extends Controller
             'mail_encryption' => $request->get('mail_encryption'),
             'mail_from_address' => $request->get('mail_from_address'),            
         ]);
+        OptHelpers::app_env($config);
+        
         $config->save();
 
         return redirect()->route('email-config')->withStatus('Configuration saved!.');
@@ -91,5 +99,4 @@ class EmailConfigController extends Controller
 
         return redirect()->route('email-config')->withStatus('Configuration saved!.');
     }
-
 }
