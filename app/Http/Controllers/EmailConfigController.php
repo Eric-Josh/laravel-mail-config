@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\EmailConfig;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Config;
+use Mail;
 
 use App\Http\Helpers\OptHelpers;
 
@@ -55,9 +55,19 @@ class EmailConfigController extends Controller
             'mail_encryption' => $request->get('mail_encryption'),
             'mail_from_address' => $request->get('mail_from_address'),            
         ]);
-        OptHelpers::app_env($config);
-        
+                
         $config->save();
+        OptHelpers::app_env();
+
+        if ($request->get('test_mail_check') == true){
+            
+            $testMail = $request->get('test_email');
+            Mail::send([], [], function($message)use($testMail) {
+                $message->to($testMail, 'Test User')
+                        ->subject('Test Mailing')
+                        ->setBody('Hi, This is a test mail');                
+            });
+        }
 
         return redirect()->route('email-config')->withStatus('Configuration saved!.');
     }
@@ -97,6 +107,21 @@ class EmailConfigController extends Controller
 
         $config->save();
 
+        if($request->input('change') == 1){
+            OptHelpers::app_env();
+            // sleep(3);
+        }        
+
+        if ($request->input('test_mail_check') == true){
+            
+            $testMail = $request->input('test_email');
+            Mail::send([], [], function($message)use($testMail) {
+                $message->to($testMail, 'Test User')
+                        ->subject('Test Mailing')
+                        ->setBody('Hi, This is a test mail');                
+            });
+        }
+        
         return redirect()->route('email-config')->withStatus('Configuration saved!.');
     }
 }

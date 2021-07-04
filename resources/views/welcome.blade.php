@@ -92,10 +92,10 @@
                             <div class="p-6 border-t border-gray-200 dark:border-gray-700 md:border-l">
                                 Connection Type <br>
                                 
-                                <input type="radio" class="mail-encrypt" value="SSL" name="mail_encryption" {{ old('mail_encryption', $config->mail_encryption ?? null) == 'SSL' ? 'checked' : '' }}>
+                                <input type="radio" class="mail-encrypt mailer" value="ssl" name="mail_encryption" {{ old('mail_encryption', $config->mail_encryption ?? null) == 'ssl' ? 'checked' : '' }}>
                                 <label for="mail_encryption">SSL</label>
 
-                                <input type="radio"  class="mail-encrypt" value="TLS" name="mail_encryption" {{ old('mail_encryption', $config->mail_encryption ?? null) == 'TLS' ? 'checked' : '' }}>
+                                <input type="radio"  class="mail-encrypt mailer" value="tls" name="mail_encryption" {{ old('mail_encryption', $config->mail_encryption ?? null) == 'tls' ? 'checked' : '' }}>
                                 <label  for="mail_encryption">TLS</label>
                             </div>
 
@@ -104,11 +104,11 @@
                                 <input type="checkbox" name="test_mail_check" id="mail-check" >
                             </div>
                             <div class="p-6 border-t border-gray-200 dark:border-gray-700 md:border-l">
-                                <input type="email" placeholder="Test Mail Address" name="test_mail" id="test-mail" disabled />
+                                <input type="email" placeholder="Test Mail Address" name="test_email" id="test-mail" disabled />
                             </div>
                             
                         </div>
-
+                        <input type="hidden" id="change-val" name="change" placeholder="change checker">
                         <div class="p-6 border-t border-gray-200 dark:border-gray-700 md:border-l" id="btn">
                             <button type="submit" id="save">Save</button>
                         </div>
@@ -132,15 +132,19 @@
             if($('#mail-id').val() != ''){
                 $('#btn').html('<button type="button" id="edit">Edit</button>');               
                 $('#mail-check').prop('disabled',true);
-                $('.mail-encrypt').prop('disabled',true);
+                // $('.mail-encrypt').prop('disabled',true);
                 $('.mailer').prop('disabled',true);
             }
             
             $('#edit').click(function(){
                 $('#mail-check').prop('disabled',false);
-                $('.mail-encrypt').prop('disabled',false);
+                // $('.mail-encrypt').prop('disabled',false);
                 $('.mailer').prop('disabled',false);
                 $('#btn').html('<button type="submit" id="save">Save</button>');
+            });
+
+            $('.mailer').change(function(){
+                $('#change-val').val('1');
             });
         });
         </script>

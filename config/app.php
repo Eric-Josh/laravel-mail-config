@@ -1,4 +1,5 @@
 <?php
+use App\Http\Helpers\OptHelpers;
 
 return [
 
@@ -15,14 +16,14 @@ return [
 
     'name' => env('APP_NAME', 'Laravel'),
 
-    'mail_mailer' => env('MAIL_MAILER'),
-    'mail_host' => env('MAIL_HOST'),
-    'mail_port' => env('MAIL_PORT'),
-    'mail_user' => env('MAIL_USERNAME'), 
-    'mail_pass' => env('MAIL_PASSWORD'), 
-    'mail_encryp' => env('MAIL_ENCRYPTION'),  
-    'mail_from' => env('MAIL_FROM_ADDRESS'),
-
+    'mail_mailer'   => env('MAIL_MAILER'),
+    'mail_host'     => env('MAIL_HOST'),
+    'mail_port'     => env('MAIL_PORT'),
+    'mail_user'     => env('MAIL_USERNAME'), 
+    'mail_pass'     => env('MAIL_PASSWORD'), 
+    'mail_encryp'   => env('MAIL_ENCRYPTION'),  
+    'mail_from'     => env('MAIL_FROM_ADDRESS'),
+  
     /*
     |--------------------------------------------------------------------------
     | Application Environment
