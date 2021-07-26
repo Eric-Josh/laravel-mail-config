@@ -4,10 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\EmailConfig;
-use Illuminate\Support\Facades\Log;
-use Mail;
-
+use App\Jobs\TestMailConfig;
 use App\Http\Helpers\OptHelpers;
+
+use Illuminate\Support\Facades\Log;
 
 class EmailConfigController extends Controller
 {
@@ -109,19 +109,15 @@ class EmailConfigController extends Controller
 
         if($request->input('change') == 1){
             OptHelpers::app_env();
-            // sleep(3);
         }        
 
         if ($request->input('test_mail_check') == true){
             
             $testMail = $request->input('test_email');
-            Mail::send([], [], function($message)use($testMail) {
-                $message->to($testMail, 'Test User')
-                        ->subject('Test Mailing')
-                        ->setBody('Hi, This is a test mail');                
-            });
+            $delay = 10;
+            dispatch(new TestMailConfig($testMail))->delay($delay);
         }
         
-        return redirect()->route('email-config')->withStatus('Configuration saved!.');
+        return redirect()->route('notice')->withStatus('Configuration saved!.');
     }
 }
