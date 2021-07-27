@@ -62,11 +62,8 @@ class EmailConfigController extends Controller
         if ($request->get('test_mail_check') == true){
             
             $testMail = $request->get('test_email');
-            Mail::send([], [], function($message)use($testMail) {
-                $message->to($testMail, 'Test User')
-                        ->subject('Test Mailing')
-                        ->setBody('Hi, This is a test mail');                
-            });
+            $delay = 10;
+            dispatch(new TestMailConfig($testMail))->delay($delay);
         }
 
         return redirect()->route('email-config')->withStatus('Configuration saved!.');
@@ -118,6 +115,6 @@ class EmailConfigController extends Controller
             dispatch(new TestMailConfig($testMail))->delay($delay);
         }
         
-        return redirect()->route('notice')->withStatus('Configuration saved!.');
+        return redirect()->route('email-config')->withStatus('Configuration saved!.');
     }
 }

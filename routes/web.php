@@ -17,10 +17,7 @@ use App\Http\Controllers\MailConfigController;
 
 
 Route::get('/', [EmailConfigController::class, 'index'])->name('email-config');
-Route::post('post',[EmailConfigController::class, 'store'])->name('email-config.store');
-Route::put('update/{id}',[EmailConfigController::class, 'update'])->name('email-config.update');
-
-Route::get('/mail',[MailConfigController::class, 'index'])->name('mail-config');
-Route::post('/mail-post',[MailConfigController::class, 'update_config'])->name('mail-config.update');
+Route::post('/post',[EmailConfigController::class, 'store'])->name('email-config.store');
+Route::put('/update/{id}',[EmailConfigController::class, 'update'])->name('email-config.update');
 
 Route::get('/notice',[MailConfigController::class, 'notice'])->name('notice');
