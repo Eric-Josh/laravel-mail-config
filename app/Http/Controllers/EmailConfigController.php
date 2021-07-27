@@ -20,7 +20,7 @@ class EmailConfigController extends Controller
     public function index()
     {
         $config = EmailConfig::first();
-        
+                
         return view('welcome')->with('config', $config);
     }
 
@@ -107,9 +107,9 @@ class EmailConfigController extends Controller
 
         $config->save();
 
-        if($request->input('change') == 1){
+        if($request->input('change') == '1'){
             OptHelpers::app_env();
-        }        
+        }    
 
         if ($request->input('test_mail_check') == true){
             

@@ -28,7 +28,7 @@
                 @if (session('status'))
                     {{ session('status') }}
                 @endif
-                <a href="{{ route('mail-config') }}">{{ __('Go back') }}</a>
+                <a href="{{ route('email-config') }}">{{ __('Go back') }}</a>
             </div>
         </div>
     </body>

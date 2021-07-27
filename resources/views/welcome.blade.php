@@ -108,7 +108,7 @@
                             </div>
                             
                         </div>
-                        <input type="hidden" id="change-val" name="change" placeholder="change checker">
+                        <input type="hidden" id="checkchange" name="change" placeholder="change checker">
                         <div class="p-6 border-t border-gray-200 dark:border-gray-700 md:border-l" id="btn">
                             <button type="submit" id="save">Save</button>
                         </div>
@@ -144,7 +144,8 @@
             });
 
             $('.mailer').change(function(){
-                $('#change-val').val('1');
+                $('#checkchange').val('1');
+                console.log($('#checkchange').val());
             });
         });
         </script>

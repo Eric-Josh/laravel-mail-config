@@ -49,7 +49,9 @@ class MailConfigController extends Controller
             'mail_encryption'   => $request->input('mail_encryption'),
             'mail_from_address' => $request->input('mail_from_address'),            
         ];
-        if($request->input('change') == 1){
+        
+        if($request->input('change') == '1'){
+            
             OptHelpers::app_env($config);
         }
 
